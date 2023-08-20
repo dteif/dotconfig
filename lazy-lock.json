@@ -1,5 +1,6 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "0236521ea582747b58869cb72f70ccfa967d2e89" },
+  "catppuccin": { "branch": "main", "commit": "3fdd3942567503d23b65ccc21e7d7757334defd5" },
   "cheatsheet.nvim": { "branch": "master", "commit": "9716f9aaa94dd1fd6ce59b5aae0e5f25e2a463ef" },
   "harpoon": { "branch": "master", "commit": "21f4c47c6803d64ddb934a5b314dcb1b8e7365dc" },
   "lazy.nvim": { "branch": "main", "commit": "3ad55ae678876516156cca2f361c51f7952a924b" },

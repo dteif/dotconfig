@@ -6,8 +6,11 @@ return {
 		config = function ()
 			require('lualine').setup {
 				options = {
+					-- Set theme. See lualine readme, or, for catppuccin,
+					-- see https://github.com/catppuccin/nvim#integrations
+					theme = 'catppuccin',
+
 					icons_enabled = true,
-					theme = 'auto',
 					component_separators = { left = ' ', right = ' '},
 					section_separators = { left = "", right = "" },
 					-- component_separators = { left = '', right = ''},
@@ -44,7 +47,7 @@ return {
 				tabline = {},
 				winbar = {},
 				inactive_winbar = {},
-				extensions = {}
+				extensions = {"quickfix"}
 			} 
 		end
 	}
