@@ -1,2 +1,2 @@
-print("Running core configuration")
-require("core.remap")
+require("core.keymap")
+require("core.editor")
