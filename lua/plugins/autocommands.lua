@@ -5,15 +5,15 @@ local lazy_augroup = vim.api.nvim_create_augroup("lazy_install", {})
 
 -- this autocommand will install plugins when any plugin configuration changes. When
 -- a change in the configuration of lazy is detected, LazyReload event will be fired.
-vim.api.nvim_create_autocmd({"User"}, {
-	group = lazy_augroup,
-	pattern = "LazyReload",
-	callback = function()
-		vim.cmd.source()
-		local lazy = require('lazy')
-		lazy.clean({ wait = true })
-		lazy.install({ wait = true })
-	end
+vim.api.nvim_create_autocmd({ "User" }, {
+  group = lazy_augroup,
+  pattern = "LazyReload",
+  callback = function()
+    vim.cmd.source()
+    local lazy = require("lazy")
+    lazy.clean({ wait = true })
+    lazy.install({ wait = true })
+  end,
 })
 
 --[[
