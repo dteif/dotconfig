@@ -34,6 +34,10 @@ return {
           default = {
             winbar_info = true, -- helps avoiding line mismatches between diff views due to lspsaga breadcrumbs
           },
+          merge_tool = {
+            layout = "diff4_mixed",
+            winbar_info = true,
+          },
           file_history = {
             winbar_info = true,
           },
@@ -43,6 +47,15 @@ return {
       })
 
       require("core.keymap").diffview()
+    end,
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+
+      -- todo add keybindings: see https://github.com/lewis6991/gitsigns.nvim?tab=readme-ov-file#keymaps
     end,
   },
 }

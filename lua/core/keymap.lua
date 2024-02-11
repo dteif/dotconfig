@@ -40,6 +40,7 @@ function M.general()
     px = { vim.cmd.Ex, "Explore current file directory (netrw)" },
 
     y = { '"+y', "Yank into system clipboard" },
+    d = { '"_d', "Delete w/o overriding yank register" },
 
     -- Start replacing word (pattern) at cursor location with magic
     -- (https://github.com/ThePrimeagen/init.lua/blob/master/lua/theprimeagen/remap.lua)
@@ -53,6 +54,8 @@ function M.general()
   }, { mode = "v" })
 
   wk.register({
+    d = { '"_d', "Delete selection w/o overriding yank register" },
+    p = { '"_dP', "Paste w/o overriding yank register" },
     y = { '"+y', "Yank into system clipboard" },
   }, { mode = "v", prefix = "<leader>" })
 end
@@ -200,7 +203,7 @@ end
 --
 -- Diffview default keymaps will be disabled, so this function should return them as well as custom ones.
 function M.diffview_actions()
-	local actions = require("diffview.actions")
+  local actions = require("diffview.actions")
 
   return {
     view = {
@@ -336,8 +339,9 @@ function M.fugitive()
   wk.register({
     g = {
       c = {
-        m = { "<cmd>Git commit <bar> wincmd J<cr>", "Commit staged changes" },
+        m = { "<cmd>Git commit | wincmd J<cr>", "Commit staged changes" },
       },
+      g = { "<cmd>Git | wincmd J<cr>", "Show git fugitive summary" },
     },
   }, { mode = "n", prefix = "<leader>" })
 end
@@ -399,6 +403,12 @@ function M.telescope()
   local ts = require("telescope.builtin")
 
   wk.register({
+    ["<leader>"] = {
+      function()
+        ts.buffers({ sort_lastused = true })
+      end,
+      "Show open buffers",
+    },
     p = {
       f = {
         function()

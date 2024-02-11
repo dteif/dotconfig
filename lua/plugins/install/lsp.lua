@@ -96,6 +96,8 @@ return {
         -- for a list of available LSP servers (they are not the same of mason package names).
         ---@type string[]
         ensure_installed = {
+          "astro",
+          "clangd",
           "eslint",
           "html",
           "jsonls",

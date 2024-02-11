@@ -44,7 +44,7 @@ return {
           lualine_a = { "mode" },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = {
-            "filename",
+            { "filename", path = 1 },
             "require('lsp-progress').progress()", -- see lsp-progress.nvim
           },
           lualine_x = { "encoding", "fileformat", "filetype" },
