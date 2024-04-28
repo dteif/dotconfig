@@ -1,1 +1,10 @@
+# Other programs/utilities config files
+/.mono/
+/Autodesk/
+/configstore/
+/iterm2/
+/yarn/
+
+# Temporary files
 .temp/
+.DS_Store
