@@ -1,10 +1,20 @@
-# Other programs/utilities config files
-/.mono/
-/Autodesk/
-/configstore/
-/iterm2/
-/yarn/
+# Exclude everything (but folders). Folders to track will
+# be reincluded later.
+# See https://stackoverflow.com/a/30476326
+/**/**
+!/**/
 
-# Temporary files
-.temp/
+# Include root files
+!/.gitignore
+!/README.md
+!/stylua.toml
+
+# Neovim config
+!/nvim/**
+
+# Wezterm config
+!/wezterm/**
+
+# Exclude temporary files
 .DS_Store
+.temp/

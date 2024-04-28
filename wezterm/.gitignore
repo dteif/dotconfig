@@ -1,0 +1,2 @@
+# .cache directory is used to store custom script data which is persistent among sessions
+.cache/
