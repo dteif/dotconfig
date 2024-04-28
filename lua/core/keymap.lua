@@ -23,6 +23,10 @@ function M.general()
     ["<C-u>"] = { "<C-u>zz", "Scroll down half a page" },
 
     -- Move between open windows
+    ["<C-h>"] = { "<C-w>h", "Go to the left window" },
+    ["<C-j>"] = { "<C-w>j", "Go to the down window" },
+    ["<C-k>"] = { "<C-w>k", "Go to the up window" },
+    ["<C-l>"] = { "<C-w>l", "Go to the right window" },
     ["<M-Left>"] = { "<C-w>h", "Go to the left window" },
     ["<M-Down>"] = { "<C-w>j", "Go to the down window" },
     ["<M-Up>"] = { "<C-w>k", "Go to the up window" },
@@ -45,6 +49,11 @@ function M.general()
     -- Start replacing word (pattern) at cursor location with magic
     -- (https://github.com/ThePrimeagen/init.lua/blob/master/lua/theprimeagen/remap.lua)
     s = { ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", "Replace word under cursor", silent = false },
+
+    -- TODO move to neotree function
+    p = {
+      e = { "<cmd>Neotree toggle<cr>", "Toggle file tree window" },
+    },
   }, { mode = "n", prefix = "<leader>" })
 
   wk.register({
