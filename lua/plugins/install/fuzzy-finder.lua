@@ -10,7 +10,7 @@ return {
         defaults = {
           -- The following patterns are going to be excluded from every search. Files or directories already
           -- gitignored should not be put here, since by default telescope is already excluding those paths.
-          file_ignore_patterns = { ".git/" },
+          file_ignore_patterns = { ".git/", "yarn.lock" },
         },
       })
 
