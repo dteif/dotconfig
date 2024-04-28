@@ -42,7 +42,19 @@ return {
         },
         sections = {
           lualine_a = { "mode" },
-          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_b = {
+            "branch",
+            "diff",
+            {
+              "diagnostics",
+              symbols = {
+                error = "󰅚 ", -- x000f015a
+                warn = "󰀪 ", -- x000f002a
+                info = "󰋽 ", -- x000f02fd
+                hint = "󰌶 ", -- x000f0336
+              },
+            },
+          },
           lualine_c = {
             { "filename", path = 1 },
             "require('lsp-progress').progress()", -- see lsp-progress.nvim

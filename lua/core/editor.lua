@@ -47,6 +47,13 @@ function M.setup()
 
   -- Add ruler column
   vim.opt.colorcolumn = "120"
+
+  -- Update diagnostics symbols displayed next to line numbers
+  local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = "󰋽 " }
+  for type, icon in pairs(signs) do
+    local hl = "DiagnosticSign" .. type
+    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  end
 end
 
 return M
