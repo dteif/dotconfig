@@ -45,3 +45,15 @@ You can install it with:
 # Homebrew (MacOS / Linux)
 brew install ripgrep
 ```
+
+## Wezterm
+
+[Wezterm](https://github.com/wez/wezterm) is a GPU-accelerated cross-platform terminal
+emulator and multiplexer written by [wez](https://github.com/wez) and implemented in Rust
+
+You can install it with:
+
+```sh
+# Homebrew (MacOS)
+brew install --cask wezterm
+```
