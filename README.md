@@ -10,6 +10,15 @@ you can clone this repository directly in such folder, e.g.
 git clone https://github.com/dteif/dotconfig ~/.config
 ```
 
+Some tools are included within this repository by means of git 
+[submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules). These have to be
+explicitly downloaded after a new clone or a pull of an update that upgraded the version
+of a submodule. Most of the times, it is enough to call (after `clone` or `pull`):
+
+```sh
+git submodule update --init
+```
+
 Additionally, some external tools need to be installed for everything to work properly.
 The following is a list of programs which are configured by files in this repository
 or are required by another one. Notice, however, that not all the programs listed here
@@ -29,10 +38,16 @@ You can install it with:
 brew install neovim
 ```
 
-Requires:
+The following tools are required:
 
 __ripgrep__ [🔗](#ripgrep) Required by [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 plugin for its `live_grep` and `grep_string` functionalities.
+
+In order to have a proper visualization of all the displayed elements, it is necessary
+to run Neovim inside a terminal emulator that supports both 'true colors' and 'nerd fonts'. 
+This can be one of the following:
+
+__wezterm__ [🔗](#wezterm) (_optional_)
 
 ## Ripgrep
 
@@ -44,6 +59,38 @@ You can install it with:
 ```sh
 # Homebrew (MacOS / Linux)
 brew install ripgrep
+```
+
+## Tmux
+
+[Tmux](https://github.com/tmux/tmux) is a terminal multiplexer: it enables a number
+of terminals to be created, accessed, and controlled from a single screen. tmux may
+be detached from a screen and continue running in the background, then later reattached.
+
+You can install it with:
+
+```sh
+# Homebrew (MacOS)
+brew install tmux
+```
+
+### Tmux Plugin Manager
+
+Tmux plugins are installed by means of [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm)
+(_TPM_), which is downloaded as a git submodule. However, plugins are not installed
+automatically, but they need to be manually fetched by starting `tmux` and pressing
+`prefix` + `I` (nb: tmux `prefix` has been remapped to `C-s`). 
+
+## Tmuxinator
+
+[Tmuxinator](https://github.com/tmuxinator/tmuxinator) is used to create and manage
+tmux sessions easily.
+
+You can install it with: 
+
+```sh
+# Homebrew (MacOS)
+brew install tmuxinator
 ```
 
 ## Wezterm

@@ -22,20 +22,6 @@ function M.general()
     ["<C-d>"] = { "<C-d>zz", "Scroll up half a page" },
     ["<C-u>"] = { "<C-u>zz", "Scroll down half a page" },
 
-    -- Move between open windows
-    ["<C-h>"] = { "<C-w>h", "Go to the left window" },
-    ["<C-j>"] = { "<C-w>j", "Go to the down window" },
-    ["<C-k>"] = { "<C-w>k", "Go to the up window" },
-    ["<C-l>"] = { "<C-w>l", "Go to the right window" },
-    ["<M-Left>"] = { "<C-w>h", "Go to the left window" },
-    ["<M-Down>"] = { "<C-w>j", "Go to the down window" },
-    ["<M-Up>"] = { "<C-w>k", "Go to the up window" },
-    ["<M-Right>"] = { "<C-w>l", "Go to the right window" },
-    ["˙"] = { "<C-w>h", "Go to the left window" }, -- <M-h>
-    ["∆"] = { "<C-w>j", "Go to the down window" }, -- <M-j>
-    ["˚"] = { "<C-w>k", "Go to the up window" }, -- <M-k>
-    ["¬"] = { "<C-w>l", "Go to the right window" }, -- <M-l>
-
     -- TODO move to neotree function
     ["ƒ"] = { "<cmd>Neotree focus<cr>", "Go to file tree window" }, -- <M-f>
   }, { mode = "n" })
@@ -405,6 +391,19 @@ function M.lspsaga()
     ["<C-`>"] = { "<cmd>Lspsaga term_toggle<cr>", "Close float terminal" },
   }, { mode = "t" })
 end
+
+-- Register navigator.nvim keymaps
+function M.navigator()
+  local wk = require("which-key")
+
+  wk.register({
+    ["<C-h>"] = { "<cmd>NavigatorLeft<cr>", "Go to the left window" },
+    ["<C-j>"] = { "<cmd>NavigatorDown<cr>", "Go to the down window" },
+    ["<C-k>"] = { "<cmd>NavigatorUp<cr>", "Go to the up window" },
+    ["<C-l>"] = { "<cmd>NavigatorRight<cr>", "Go to the right window" },
+  }, { mode = { "n", "t" } })
+end
+
 
 -- Register telescope.nvim keymaps
 function M.telescope()

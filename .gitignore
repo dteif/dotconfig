@@ -6,11 +6,20 @@
 
 # Include root files
 !/.gitignore
+!/.gitmodules
 !/README.md
 !/stylua.toml
 
 # Neovim config
 !/nvim/**
+
+# Tmux config
+!/tmux/**
+/tmux/plugins/
+!/tmux/plugins/tpm/
+
+# Tmuxinator
+!/tmuxinator/**
 
 # Wezterm config
 !/wezterm/**

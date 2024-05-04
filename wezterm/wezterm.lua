@@ -42,11 +42,13 @@ config.enable_scroll_bar = false
 config.use_resize_increments = true
 -- remove title bar, but keep resizable border
 config.window_decorations = "RESIZE"
---config.window_background_opacity = 0.95
+-- config.window_background_opacity = 0.95
+-- config.macos_window_background_blur = 40
 
 -- TabBar
 -- config.tab_bar_at_bottom = true -- this is needed if plugin is not used
 -- config.use_fancy_tab_bar = false -- this allows the color_scheme to style also tabs (w/o plugin)
+config.hide_tab_bar_if_only_one_tab = true
 wezterm.plugin.require("https://github.com/nekowinston/wezterm-bar").apply_to_config(config, {
   position = "bottom",
   max_width = 32,
