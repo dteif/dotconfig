@@ -1,0 +1,7 @@
+- name: setup dotfiles
+  hosts: local
+  roles:
+    - { role: nvim, tags: [ "nvim" ] }
+    - { role: tmux, tags: [ "tmux" ] }
+    - { role: tmuxinator, tags: [ "tmuxinator" ] }
+    - { role: wezterm, tags: [ "wezterm" ] }

@@ -1,0 +1,3 @@
+# Plugins folder but tpm submodule folder
+/plugins
+!/plugins/tpm/

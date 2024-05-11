@@ -1,0 +1,80 @@
+# Symlink a configuration file or directory.
+#
+# This role will create a symlink to another file or directory. Additionally, a backup
+# of a previous configuration will be made if a file or directory is found at the
+# destination. This role will fail if a backup is necessary and destination already exists.
+#
+# Variables:
+#
+# - display_name  The tool name that will appear in tasks descriptions (e.g. "zsh")
+#
+# - src           The file/directory that the symlink should point to (e.g. 
+#                 "some/path/files/.zshrc" or "some/path/nvim/files")
+#
+# - dest          The path where the symlink will be created (e.g. "~/.zshrc"
+#                 or "~/.config/nvim")
+#
+# - backup        The path where to copy the original destination if this exists 
+#                 (e.g. "~/.zshrc.bak" or "~/.config/nvim.bak")
+
+- name: "{{ display_name }} | get destination info"
+  ansible.builtin.stat: 
+    path: "{{ dest }}"
+  register: dest_stat
+
+- name: backup previous destination if it is not a symlink
+  block:
+    # If a directory, copy its content
+    - name: backup a directory
+      block:
+        - name: "{{ display_name }} | backup previous destination directory"
+          ansible.builtin.copy:
+            remote_src: true
+            src: "{{ dest }}/" # copy directory content to new directory (notice '/')
+            dest: "{{ backup }}"
+            force: false # do not copy if destination exists
+          register: copy_result
+
+        - name: "{{ display_name }} | assert backup success"
+          ansible.builtin.assert:
+            that: 
+              - copy_result.changed
+            fail_msg: "failed to copy {{ dest }} to {{ backup }}: destination already exists."
+            success_msg: "copied {{ dest }} content to {{ backup }}"
+      when: dest_stat.stat.isdir
+        
+    # If a file, copy it directly
+    - name: backup a file
+      block:
+        - name: "{{ display_name }} | backup previous destination file"
+          ansible.builtin.copy:
+            remote_src: true
+            src: "{{ dest }}"
+            dest: "{{ backup }}"
+            force: false # do not copy if destination exists
+          register: copy_result
+
+        - name: "{{ display_name }} | assert backup success"
+          ansible.builtin.assert:
+            that: 
+              - copy_result.changed
+            fail_msg: "failed to copy {{ dest }} to {{ backup }}: destination already exists."
+            success_msg: "copied {{ dest }} to {{ backup }}"
+      when: not dest_stat.stat.isdir
+
+    # Remove previous destination
+    - name: "{{ display_name }} | remove previous destination"
+      ansible.builtin.file:
+        path: "{{ dest }}"
+        state: absent
+  when: 
+    - dest_stat.stat.exists 
+    - not dest_stat.stat.islnk
+
+# Create symlink to source
+- name: "{{ display_name }} | create symlink"
+  ansible.builtin.file:
+    src: "{{ src }}"
+    dest: "{{ dest }}"
+    state: link
+

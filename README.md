@@ -2,12 +2,26 @@ Workspace configuration files.
 
 # Setup
 
-Configuration files are expected to be found in your config directory, which is typically
-`~/.config` for Linux, BSD, or macOS, and `~/AppData/Local` for Windows. Therefore,
-you can clone this repository directly in such folder, e.g.
+Configuration files are expected to be mostly found in the user config directory,
+which is typically `~/.config` for Linux, BSD, or macOS, and `~/AppData/Local` for
+Windows. This repository, however, makes use of [Ansible](https://github.com/ansible/ansible)
+and some custom tools to install, update and manage configurations, which will eventually
+be symlinked to the expected directories according the application and the host platform.
+
+## Run setup
 
 ```sh
-git clone https://github.com/dteif/dotconfig ~/.config
+ansible-playbook -i .ansible/inventory.yaml setup.yaml
+```
+
+## Manual installation
+
+### Clone the repository
+
+This repository can be cloned anywhere, for instance you can clone it with:
+
+```sh
+git clone https://github.com/dteif/dotconfig ~/dotconfig
 ```
 
 Some tools are included within this repository by means of git 
@@ -18,6 +32,27 @@ of a submodule. Most of the times, it is enough to call (after `clone` or `pull`
 ```sh
 git submodule update --init
 ```
+
+### Install Ansible
+
+In order to make use of the automated management of the configuration files, Ansible needs
+to be installed on the machine. This could be done, for instance, with:
+
+```sh
+# Homebrew (MacOS)
+brew install pipx
+pipx ensurepath
+pipx install --include-deps ansible
+```
+
+
+
+
+
+
+
+
+# Setup applications
 
 Additionally, some external tools need to be installed for everything to work properly.
 The following is a list of programs which are configured by files in this repository

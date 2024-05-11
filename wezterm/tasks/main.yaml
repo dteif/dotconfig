@@ -1,0 +1,20 @@
+# Install
+
+
+# Configure
+
+# Evaluate lazy variables into actual variables 
+# This avoids that e.g. "role_path" is evaluated in a called function role with its
+# local path.
+- name: prepare context variables
+  set_fact:
+    symlink_config_src: "{{ role_path }}/files"
+
+- name: symlink config directory
+  include_role:
+    name: symlink_config
+  vars: 
+    display_name: wezterm
+    src: "{{ symlink_config_src }}"
+    dest: "{{ dotfiles_dir }}/.config/wezterm"
+    backup: "{{ dotfiles_dir }}/.config/wezterm.bak"
