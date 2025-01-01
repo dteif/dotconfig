@@ -6,7 +6,8 @@ Configuration files are expected to be mostly found in the user config directory
 which is typically `~/.config` for Linux, BSD, or macOS, and `~/AppData/Local` for
 Windows. This repository, however, makes use of [Ansible](https://github.com/ansible/ansible)
 and some custom tools to install, update and manage configurations, which will eventually
-be symlinked to the expected directories according the application and the host platform.
+be copied or symlinked to the expected directories according the application and the
+host platform.
 
 ## Run setup
 
@@ -138,4 +139,11 @@ You can install it with:
 ```sh
 # Homebrew (MacOS)
 brew install --cask wezterm
+```
+
+## Ghostty
+
+```sh
+# Homebrew (MacOS)
+brew install --cask ghostty
 ```

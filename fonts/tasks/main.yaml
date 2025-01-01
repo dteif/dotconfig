@@ -1,0 +1,4 @@
+# Install
+- name: install on macOS
+  import_tasks: install.macos.yaml
+  when: ansible_facts['distribution']|lower in ['macosx']

@@ -1,6 +1,8 @@
 - name: setup dotfiles
   hosts: local
   roles:
+    - { role: fonts, tags: [ "fonts" ] }
+    - { role: ghostty, tags: [ "ghostty" ] }
     - { role: nvim, tags: [ "nvim" ] }
     - { role: tmux, tags: [ "tmux" ] }
     - { role: tmuxinator, tags: [ "tmuxinator" ] }

@@ -21,12 +21,9 @@ config.inactive_pane_hsb = {
 
 -- ####################################################################### Fonts
 
-config.font_dirs = { "assets/fonts" }
-
 --   NotoSansM
 -- config.line_height = 1.25
 -- config.font_size = 11
--- config.font_dirs = { "assets/fonts" }
 -- config.font = wezterm.font_with_fallback({
 --   {
 --     family = "NotoSansM Nerd Font",

@@ -1,0 +1,20 @@
+# Install fonts
+# -----------------------------------------------------------------------------
+#
+# For MacOS, fonts can be installed for the current user by simply copying files into
+# "~/Library/Fonts" directory. Font files can be organized in subdirectories. Symbolic
+# links will not work, so font files are copied directly.
+
+# Evaluate lazy variables into actual variables 
+# This avoids that e.g. "role_path" is evaluated in a called function role with its
+# local path.
+- name: prepare context variables
+  set_fact:
+    fonts_src: "{{ role_path }}/files"
+
+- name: install fonts
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ fonts_src }}/" # copy directory content
+    dest: "{{ home_dir }}/Library/Fonts/"
+

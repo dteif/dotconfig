@@ -1,3 +1,4 @@
 # Variables common to all groups
 
 dotfiles_dir: "{{ '~' | expanduser }}"
+home_dir: "{{ '~' | expanduser }}"
