@@ -10,7 +10,8 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
--- Colors
+-- ###################################################################### Colors
+
 config.color_scheme = "Catppuccin Macchiato"
 -- dim unfocused panes
 config.inactive_pane_hsb = {
@@ -18,19 +19,83 @@ config.inactive_pane_hsb = {
   brightness = 0.8,
 }
 
--- Fonts
-config.line_height = 1.25
-config.font_size = 11
+-- ####################################################################### Fonts
+
 config.font_dirs = { "assets/fonts" }
+
+--   NotoSansM
+-- config.line_height = 1.25
+-- config.font_size = 11
+-- config.font_dirs = { "assets/fonts" }
+-- config.font = wezterm.font_with_fallback({
+--   {
+--     family = "NotoSansM Nerd Font",
+--     weight = "Regular",
+--     harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+--   },
+-- })
+
+--   CaskaydiaCove [Cascadia Code]
+config.line_height = 1.4
+config.font_size = 11
+config.dpi_by_screen = {
+  -- ["Built-in Retina Display"] = 144, -- You can omit this if you don't need to change it
+  ["PHL 499P9"] = 82,
+}
 config.font = wezterm.font_with_fallback({
   {
-    family = "NotoSansM Nerd Font",
+    family = "CaskaydiaCove Nerd Font",
     weight = "Regular",
-    harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
   },
 })
+-- override default DemiBold and ExtraLight
+config.font_rules = {
+  {
+    italic = true,
+    intensity = "Normal",
+    font = wezterm.font({
+      family = "CaskaydiaCove Nerd Font",
+      style = "Italic",
+    }),
+  },
+  {
+    intensity = "Bold",
+    italic = true,
+    font = wezterm.font({
+      family = "CaskaydiaCove Nerd Font",
+      weight = "Bold",
+      style = "Italic",
+    }),
+  },
+  {
+    intensity = "Bold",
+    italic = false,
+    font = wezterm.font({
+      family = "CaskaydiaCove Nerd Font",
+      weight = "Bold",
+    }),
+  },
+  {
+    italic = true,
+    intensity = "Half",
+    font = wezterm.font({
+      family = "CaskaydiaCove Nerd Font",
+      weight = "Light",
+      style = "Italic",
+    }),
+  },
+  {
+    italic = false,
+    intensity = "Half",
+    font = wezterm.font({
+      family = "CaskaydiaCove Nerd Font",
+      weight = "Light",
+    }),
+  },
+}
 
--- Window
+-- ###################################################################### Window
+
 -- padding
 config.window_padding = {
   left = "25px",
