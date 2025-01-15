@@ -171,45 +171,67 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local servers = require("mason-lspconfig").get_installed_servers()
       for _, server_name in ipairs(servers) do
-        lspconfig[server_name].setup({
-          capabilities = capabilities,
-          on_init = function(client)
-            -- Setup 'lua_ls' server to include vim library, if current file belongs
-            -- to nvim config (otherwise all .lua files would include this).
-            -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
-            if server_name == "lua_ls" and require("core.utils").is_cwd_nvim_config() then
-              client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-                Lua = {
-                  runtime = {
-                    -- Tell the language server which version of Lua you're using
-                    -- (most likely LuaJIT in the case of Neovim)
-                    version = "LuaJIT",
-                  },
-                  -- Make the server aware of Neovim runtime files
-                  workspace = {
-                    checkThirdParty = false,
-                    library = {
-                      vim.env.VIMRUNTIME,
-                      -- "${3rd}/luv/library"
-                      -- "${3rd}/busted/library",
+        -- setup 'lua_ls' server to include vim library
+        if server_name == "lua_ls" then
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+            on_init = function(client)
+              -- Setup 'lua_ls' server to include vim library, if current file belongs
+              -- to nvim config (otherwise all .lua files would include this).
+              -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
+              if server_name == "lua_ls" and require("core.utils").is_cwd_nvim_config() then
+                client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
+                  Lua = {
+                    runtime = {
+                      -- Tell the language server which version of Lua you're using
+                      -- (most likely LuaJIT in the case of Neovim)
+                      version = "LuaJIT",
                     },
-                    -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
-                    -- library = vim.api.nvim_get_runtime_file("", true)
+                    -- Make the server aware of Neovim runtime files
+                    workspace = {
+                      checkThirdParty = false,
+                      library = {
+                        vim.env.VIMRUNTIME,
+                        -- "${3rd}/luv/library"
+                        -- "${3rd}/busted/library",
+                      },
+                      -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                      -- library = vim.api.nvim_get_runtime_file("", true)
+                    },
                   },
+                })
+                client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+              end
+              return true
+            end,
+            -- on_attach = function(client)
+            --   if server_name == "eslint" then
+            --     client.server.capabilities.documentFormattingProvider = true
+            --   elseif server_name == "tsserver" then
+            --     client.server.capabilities.documentFormattingProvider = false
+            --   end
+            -- end
+          })
+
+        -- setup 'rust_analyzer' server
+        elseif server_name == "rust_analyzer" then
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+            settings = {
+              ["rust-analyzer"] = {
+                cargo = {
+                  allFeatures = true,
                 },
-              })
-              client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-            end
-            return true
-          end,
-          -- on_attach = function(client)
-          --   if server_name == "eslint" then
-          --     client.server.capabilities.documentFormattingProvider = true
-          --   elseif server_name == "tsserver" then
-          --     client.server.capabilities.documentFormattingProvider = false
-          --   end
-          -- end
-        })
+              },
+            },
+          })
+
+        -- setup all other servers
+        else
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+          })
+        end
       end
 
       -- Setup LuaSnip
@@ -287,7 +309,7 @@ return {
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
           vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+          -- vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
           vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
           vim.keymap.set("n", "<space>wl", function()
@@ -295,7 +317,7 @@ return {
           end, opts)
           vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
           vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
-          vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
+          vim.keymap.set({ "n", "v" }, "<space>ka", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
           vim.keymap.set("n", "<space>f", function()
             vim.lsp.buf.format({ async = true })
