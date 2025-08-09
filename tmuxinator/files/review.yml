@@ -6,10 +6,12 @@
 # - `branch` git branch to be reviewed (default: 'main')
 # - `v` vertical layout. Set it equal to anything (e.g. `v=true`) to switch from
 #       an horizontal to a vertical layout. 
+# - `path` path, relative to home (~) directory, to use as cwd
+# - `task` task to run automatically after startup
 args-branch: "<% @settings['branch'] ||= 'main' %>"
 args-layout: "<% @settings['layout'] = @settings['v'] ? 'vertical' : 'horizontal' %>"
-args-path: "<% @settings['path'] ||= '.config' %>"
-
+args-path: "<% @settings['path'] ||= '' %>"
+args-task: "<% @settings['task'] ||= 'clear' %>"
 
 
 name: review
@@ -65,16 +67,43 @@ windows:
       panes:
         - ~:
           - echo 'reviewing branch <%= @settings["branch"] %>'
+
           - git fetch --prune
-          - git checkout main
-          - git pull
-          - git checkout <%= @settings["branch"] %>
-          - git pull
+
+          - >
+            (git checkout main && git pull) ||
+            tmux set-environment ERROR_MSG "failed to checkout to main"
+
+          - >
+            (git checkout <%= @settings["branch"] %> && git pull) ||
+            tmux set-environment ERROR_MSG "failed to checkout to <%= @settings["branch"] %>"
+
           - tmux wait -S ready
-          - clear
-          - nvim .
+          - eval $(tmux show-environment -s) # reload tmux env variables
+
+          # start nvim
+          - if [ -z "$ERROR_MSG" ]; then clear; nvim .; fi
+
+          # log error
+          - if [ -n "$ERROR_MSG" ]; then echo "\e[31m[ERROR] $ERROR_MSG\e[0m"; fi
+
+        # - ~:
+        #   - tmux wait ready
+        #   - yarn
+        #   - tmux resize-pane -t 2 -y 15%
+        #   - clear
+  - tasks:  
+      layout: 'main-<%= @settings["layout"] %>'
+      panes:
         - ~:
           - tmux wait ready
-          - yarn
-          - tmux resize-pane -t 2 -y 15%
-          - clear
+          - eval $(tmux show-environment -s) # reload tmux env variables
+
+          # install
+          - if [ -z "$ERROR_MSG" ]; then yarn; clear; fi
+
+          # run provided task
+          - if [ -z "$ERROR_MSG" ]; then <%= @settings["task"] %>; fi
+
+          # log error
+          - if [ -n "$ERROR_MSG" ]; then echo "\e[31m[ERROR] $ERROR_MSG\e[0m"; fi
