@@ -23,7 +23,7 @@ function M.general()
     ["<C-u>"] = { "<C-u>zz", "Scroll down half a page" },
 
     -- TODO move to neotree function
-    ["ƒ"] = { "<cmd>Neotree focus<cr>", "Go to file tree window" }, -- <M-f>
+    -- ["ƒ"] = { "<cmd>Neotree focus<cr>", "Go to file tree window" }, -- <M-f>
   }, { mode = "n" })
 
   wk.register({
@@ -40,6 +40,7 @@ function M.general()
     p = {
       e = { "<cmd>Neotree toggle<cr>", "Toggle file tree window" },
     },
+    x = { "<cmd>Neotree focus<cr>", "Focus the file tree window" }
   }, { mode = "n", prefix = "<leader>" })
 
   wk.register({
