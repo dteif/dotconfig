@@ -1,6 +1,7 @@
 - name: setup dotfiles
   hosts: local
   roles:
+    - { role: droid, tags: [ "droid" ] }
     - { role: fonts, tags: [ "fonts" ] }
     - { role: ghostty, tags: [ "ghostty" ] }
     - { role: nvim, tags: [ "nvim" ] }
