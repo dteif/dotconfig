@@ -13,12 +13,15 @@ return {
         formatters_by_ft = {
           lua = { "stylua" },
 
-          javascript = { { "prettierd", "prettier" } },
-          typescript = { { "prettierd", "prettier" } },
-          javascriptreact = { { "prettierd", "prettier" } },
-          typescriptreact = { { "prettierd", "prettier" } },
+          -- nb: prettier was changed to have precedence over prettierd to support
+          -- `satisfies` keyword which seems to cause errors (prettierd version 0.26.1)
+          javascript = { "prettier", "prettierd", stop_after_first = true },
+          typescript = { "prettier", "prettierd", stop_after_first = true },
+          javascriptreact = { "prettier", "prettierd", stop_after_first = true },
+          typescriptreact = { "prettier", "prettierd", stop_after_first = true },
 
-          json = { { "prettierd", "prettier" } },
+          json = { "prettier", "prettierd", stop_after_first = true },
+          jsonc = { "prettier", "prettierd", stop_after_first = true },
 
           -- Use the "*" filetype to run formatters on all filetypes.
           --   e.g.: ["*"] = { "codespell" },
