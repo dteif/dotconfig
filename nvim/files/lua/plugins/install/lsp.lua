@@ -86,7 +86,12 @@ return {
       -- The order of setup should be "mason", "mason-lspconfig".
       -- After setting up mason-lspconfig you may set up servers via lspconfig
 
-      require("mason").setup()
+      require("mason").setup({
+        registries = {
+          "github:mason-org/mason-registry",
+          "github:Crashdummyy/mason-registry", -- see https://github.com/seblyng/roslyn.nvim
+        },
+      })
       require("mason-lspconfig").setup({
         -- A list of servers to automatically install if they're not already
         -- installed. Example: { "rust_analyzer@nightly", "lua_ls" }
@@ -102,6 +107,7 @@ return {
           "html",
           "jsonls",
           "lua_ls",
+          -- "roslyn", -- c#: this cannot be installed from here: open mason gui and install it manually
           "rust_analyzer",
           "taplo", -- toml
           "ts_ls", -- typescript
@@ -327,5 +333,14 @@ return {
         end,
       })
     end,
+  },
+
+  {
+    "seblyng/roslyn.nvim",
+    ft = "cs",
+    opts = {
+      -- your configuration comes here; leave empty for default settings
+      -- NOTE: You must configure `cmd` in `config.cmd` unless you have installed via mason
+    },
   },
 }
