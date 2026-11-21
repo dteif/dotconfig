@@ -13,6 +13,16 @@ return {
     lazy = false,
   },
 
+  -- special comments highlighting
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("todo-comments").setup({})
+      require("core.keymap").todo_comments()
+    end,
+  },
+
   {
     "mg979/vim-visual-multi",
   },

@@ -104,7 +104,8 @@ return {
           "lua_ls",
           "rust_analyzer",
           "taplo", -- toml
-          "tsserver", -- typescript
+          "ts_ls", -- typescript
+          -- "tsserver", -- typescript (deprecated)
         },
 
         -- Whether servers that are set up (via lspconfig)
@@ -219,8 +220,9 @@ return {
             capabilities = capabilities,
             settings = {
               ["rust-analyzer"] = {
+                -- see https://rust-analyzer.github.io/book/configuration.html for settings
                 cargo = {
-                  allFeatures = true,
+                  features = "all",
                 },
               },
             },

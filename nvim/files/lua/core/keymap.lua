@@ -341,6 +341,32 @@ function M.fugitive()
   }, { mode = "n", prefix = "<leader>" })
 end
 
+function M.gitsigns()
+  local wk = require("which-key")
+  local gitsigns = require("gitsigns")
+
+  wk.register({
+    g = {
+      h = {
+        n = { function() gitsigns.nav_hunk("next") end, "Go to next hunk" },
+        p = { function() gitsigns.nav_hunk("prev") end, "Go to previous hunk" },
+
+        s = { gitsigns.stage_hunk, "Stage hunk" },
+        u = { gitsigns.reset_hunk, "Unstage hunk" },
+      },
+    },
+  }, { mode = "n", prefix = "<leader>" })
+
+  wk.register({
+    g = {
+      h = {
+        s = { function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, "Stage hunk" },
+        u = { function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end, "Unstage hunk" },
+      },
+    },
+  }, { mode = "v", prefix = "<leader>" })
+end
+
 -- Register harpoon keymaps
 function M.harpoon()
   local wk = require("which-key")
@@ -448,6 +474,18 @@ function M.telescope()
       },
     },
   }, { prefix = "<leader>", mode = "n" })
+end
+
+function M.todo_comments()
+  local wk = require("which-key")
+  local ts = require("telescope.builtin")
+
+  wk.register({
+    p = {
+      t = { "<cmd>TodoTelescope<cr>", "Show project todos (telescope)" },
+    },
+  }, { prefix = "<leader>", mode = "n" })
+
 end
 
 return M
