@@ -1,0 +1,146 @@
+#!/bin/bash
+set -euo pipefail
+
+cmd_run() {
+  # Retrieves the OAuth token from macOS Keychain, writes it to a
+  # temporary in-memory directory, starts the container, then wipes
+  # the file — whether the session exits cleanly or not.
+  SECRET_DIR="$(mktemp -d)"
+  SECRET_FILE="$SECRET_DIR/t"
+  trap 'rm -rf "$SECRET_DIR"' EXIT
+
+  security find-generic-password \
+    -a "claude-code" \
+    -s "claude-oauth-token" \
+    -w > "$SECRET_FILE"
+
+  chmod 600 "$SECRET_FILE"
+
+  CLAUDE_SECRET_FILE="$SECRET_FILE" docker compose -f .droid.compose.yml run --rm claude "$@"
+}
+
+cmd_shell() {
+  SECRET_DIR="$(mktemp -d)"
+  SECRET_FILE="$SECRET_DIR/t"
+  trap 'rm -rf "$SECRET_DIR"' EXIT
+
+  security find-generic-password \
+    -a "claude-code" \
+    -s "claude-oauth-token" \
+    -w > "$SECRET_FILE"
+
+  chmod 600 "$SECRET_FILE"
+
+  CLAUDE_SECRET_FILE="$SECRET_FILE" docker compose -f .droid.compose.yml run --rm --entrypoint bash claude "$@"
+}
+
+cmd_add() {
+  local dest=".droid.compose.yml"
+  local name="project-name"
+
+  if [ "${1:-}" = "--name" ]; then
+    name="${2:?--name requires a value}"
+    shift 2
+  fi
+
+  if [ -f "$dest" ]; then
+    echo "droid: $dest already exists" >&2
+    exit 1
+  fi
+
+  cat > "$dest" << EOF
+name: $name
+
+services:
+  claude:
+    image: droid-claude:latest
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    secrets:
+      - claude_oauth_token
+    environment:
+      - DISABLE_AUTOUPDATER=1 # pin the version baked in the image
+    volumes:
+      # isolated session per project
+      - droid-claude-home:/home/claude
+
+      # add here workspace folders to expose
+      - ./:/workspace
+
+secrets:
+  claude_oauth_token:
+    file: \${CLAUDE_SECRET_FILE} # path injected at runtime by \`droid run\`
+
+volumes:
+  # persists auth state and history across sessions
+  droid-claude-home:
+EOF
+
+  echo "Created $dest — edit the 'name' field and volumes as needed."
+}
+
+cmd_remove() {
+  local dest=".droid.compose.yml"
+
+  if [ ! -f "$dest" ]; then
+    echo "droid: $dest not found" >&2
+    exit 1
+  fi
+
+  read -r -p "Remove $dest? [y/N] " reply
+  if [ "${reply}" != "y" ] && [ "${reply}" != "Y" ]; then
+    echo "Aborted."
+    exit 0
+  fi
+
+  local project
+  project=$(grep '^name:' "$dest" | awk '{print $2}')
+
+  rm "$dest"
+  echo "Removed $dest."
+  if [ -n "$project" ]; then
+    echo "If droid was run at least once, you may also want to delete the Docker volume:"
+    echo "  docker volume rm ${project}_droid-claude-home"
+  fi
+}
+
+cmd_help() {
+  cat << 'EOF'
+Usage: droid [subcommand] [options]
+
+Subcommands:
+  run [args]          Start a Claude Code session (default if no subcommand given).
+                      Extra args are forwarded to the claude CLI.
+  add [--name NAME]   Create a .droid.compose.yml in the current directory.
+                      --name NAME  Set the project name (default: project-name).
+  remove              Remove the .droid.compose.yml from the current directory.
+  shell               Start a bash shell in the container instead of claude.
+  help, -h, --help    Show this help message.
+EOF
+}
+
+# Subcommand dispatch — default to 'run' if no subcommand given
+case "${1:-}" in
+  run)
+    shift
+    cmd_run "$@"
+    ;;
+  add)
+    shift
+    cmd_add "$@"
+    ;;
+  remove)
+    cmd_remove
+    ;;
+  shell)
+    shift
+    cmd_shell "$@"
+    ;;
+  help|-h|--help)
+    cmd_help
+    ;;
+  *)
+    cmd_run "$@"
+    ;;
+esac
